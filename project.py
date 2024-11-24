@@ -3,244 +3,10 @@ import csv
 import sys
 import sqlite3 
 from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QTableWidgetItem, QMainWindow
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QTableWidgetItem, QMainWindow, QGridLayout
 from PyQt6.QtCore import QTimer, QTime
 from PyQt6.QtGui import QPixmap
-
-
-template = '''<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>725</width>
-    <height>525</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>160</width>
-     <height>491</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>записать</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="text">
-       <string>обновить</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_3">
-      <property name="text">
-       <string>изменить</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="text">
-       <string>удалить</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>179</x>
-     <y>69</y>
-     <width>331</width>
-     <height>441</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QTableWidget" name="tableWidget"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="pushButton_5">
-   <property name="geometry">
-    <rect>
-     <x>520</x>
-     <y>10</y>
-     <width>93</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>найти</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="line_1Edit">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>10</y>
-     <width>331</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>640</x>
-     <y>20</y>
-     <width>55</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
- </widget>
- <resources/>
- <connections/>
-</ui>
-'''
-
-template1 = '''<?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>372</width>
-    <height>554</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>MainWindow</string>
-  </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="2" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_welcome">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="text">
-         <string>ВОЙТИ</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="0">
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Логин</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="lineEdit">
-          <property name="cursor">
-           <cursorShape>SizeVerCursor</cursorShape>
-          </property>
-          <property name="inputMask">
-           <string/>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="placeholderText">
-           <string>имя пользователя</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="0">
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Пароль</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="lineEdit_2">
-          <property name="cursor">
-           <cursorShape>IBeamCursor</cursorShape>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="placeholderText">
-           <string>пароль от аккааунта</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="0">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Maximum</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-   </layout>
-  </widget>
- </widget>
- <resources/>
- <connections/>
-</ui>'''
+from PyQt6.QtCore import QCoreApplication, Qt
 
 
 class MainWindow_1(QMainWindow):
@@ -254,23 +20,12 @@ class MainWindow_1(QMainWindow):
         Инициализация первого главного окна.  
         '''
         super().__init__()
-        f = io.StringIO(template1)
-        uic.loadUi(f, self)
+        uic.loadUi('k_mainwindow.ui', self) 
         # подключаем все кнопки
         self.button_welcome.clicked.connect(self.winnum2)
         self.setGeometry(300, 400, 300, 400)
- 
-        # создаем label
-        self.label = QLabel(self)
-         
-        # загружаем изображение для 1 окна
-        self.pixmap = QPixmap('internet_lock_locked_padlock_password_secure_security_icon_127100.png')
- 
-        # вставляем его в label
-        self.label.setPixmap(self.pixmap)
- 
-        # создаем размеры изображения
-        self.label.resize(100, 100)
+        self.label_pas.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label_pas.setProperty('class', 'enter')
         
 
     def winnum2(self,
@@ -295,8 +50,7 @@ class MainWindow_1(QMainWindow):
 class PasswordManager(QWidget):
     def __init__(self):
         super().__init__()
-        f1 = io.StringIO(template)
-        uic.loadUi(f1, self)
+        uic.loadUi('password_manager1.ui', self)
         self.connection = sqlite3.connect("passwords.db")
         self.setWindowTitle('Парольный менеджер')
 
@@ -512,6 +266,40 @@ class PasswordManager1(QWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     dewinnum1 = MainWindow_1()
+    dewinnum1.setStyleSheet('''
+            .enter {
+                color: #0c31ed;
+                font-size: 25px;
+            }                
+                            
+            QMainWindow{
+                background-color: QLinearGradient(x0: 0, y0: 0, x1: 0, y1: 1, stop: 0 #97D9E1, stop: 1 #D9AFD9);
+            }
+
+            QPushButton {
+                background-color: QLinearGradient(x0: 0, y0: 0, x1: 0, y1: 1, stop: 0 #85FFBD, stop: 1 #FFFB7D);
+                padding: 5px;
+                border: none;
+                border-radius: 5px;
+                margin: 10px 0 0 0;
+                color: black;
+            }
+
+            QLineEdit {
+                background-color: QLinearGradient(x0: 0, y0: 0, x1: 0, y1: 1, stop: 0 #85FFBD, stop: 1 #FFFB7D);
+                padding: 5px;
+                border: none;
+                border-radius: 5px;
+                margin: 10px 0 0 0;
+                color: black;
+            }
+            
+            QLabel {
+                color: black;
+                font-size: 14px;
+            }
+            '''
+        )
     dewinnum1.show() 
     sys.exit(app.exec())
 
